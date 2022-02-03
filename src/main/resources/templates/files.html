@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+          crossorigin="anonymous" />
+    <title>Title</title>
+</head>
+<body>
+<div>
+    <form th:action="@{/}" method="get" style="max-width: 350px; margin: 0 auto;">
+        <input type="submit" value="Menu" class="btn btn-primary">
+    </form>
+    <form th:action="@{/user/logout}" method="post" style="max-width: 350px; margin: 0 auto;">
+        <input type="submit" value="Logout" class="btn btn-primary">
+    </form>
+    <div style="max-width: 350px; margin: 0 auto;">
+        <form method="POST" enctype="multipart/form-data" th:action="@{/files}">
+            <input type="file" name="file"><br/><br/>
+            <button type="submit" class="btn btn-primary">Save file</button>
+        </form>
+    </div>
+    <h1 style="max-width: 350px; margin: 0 auto;">FIles</h1>
+    <table style="margin: 0 auto;">
+        <tr>
+            <th>NAME</th>
+            <th>SIZE</th>
+        </tr>
+        <tr th:each="file : ${files}">
+            <td th:text="${file.fileName}" ></td>
+            <td th:text="${file.size}" ></td>
+            <td>
+                <form th:action="@{/files/delete}" method="post">
+                    <input type="hidden" name="id" th:value="${file.id}">
+                    <input type="submit" value="Delete" class="btn btn-primary">
+                </form>
+            </td>
+        </tr>
+    </table>
+
+</div>
+
+</body>
+</html>

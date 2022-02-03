@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+          crossorigin="anonymous" />
+    <title>Title</title>
+</head>
+<body>
+<div style="max-width: 350px; margin: 0 auto;">
+    <form th:action="@{/}" method="get" style="max-width: 350px; margin: 0 auto;">
+        <input type="submit" value="Menu" class="btn btn-primary">
+    </form>
+<h1>Please Log In</h1>
+    <div th:if="${param.error}">
+			Invalid username and password.</div>
+		<div th:if="${param.logout}">
+			You have been logged out.</div>
+    <form th:action="@{/user/auth}" th:object="${user}" method="post">
+        <div>
+            <input type="text" name="username" th:field="*{username}" class="form-control" placeholder="Username" required/>
+        </div>
+        <div>
+        <input type="password" name="password" th:field="*{password}" class="form-control" placeholder="Password" required/>
+        </div>
+        <input type="submit" value="Log in" class="btn btn-primary"/>
+    </form>
+</div>
+</body>
+</html>
