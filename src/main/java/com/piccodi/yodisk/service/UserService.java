@@ -26,11 +26,15 @@ public class UserService {
     }
 
     public void save(User user){
+        //todo разобраться как обрабатывать ошибки в шоблонах
 
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        System.out.println(user.getPassword());
-        user.setRole(Role.USER);
-        userRepo.save(user);
+        if(userRepo.findByUsername(user.getUsername()).isEmpty()){
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+            System.out.println(user.getPassword());
+            user.setRole(Role.USER);
+            userRepo.save(user);
+        }
+
     }
 
 }

@@ -40,29 +40,37 @@ public class FileService {
 
     public void saveFile(MultipartFile file, Principal principal) {
         try{
-            //todo проверить на повторяющиеся имена
+            //todo сделать обработку else для if на сохранение в бд
+            var user = userRepo.findByUsername(principal.getName()).get();
             var dbFIle = new File();
             dbFIle.setFileName(file.getOriginalFilename());
             dbFIle.setSize( SizeCalculator.calculate(file.getSize()) + " MB");
-            fileRepo.save(dbFIle);
-            var user = userRepo.findByUsername(principal.getName()).get();
-            user.addFile(dbFIle);
-            userRepo.save(user);
-            storageService.upload(file, user);
+            if(storageService.upload(file, user)) {
+
+                fileRepo.save(dbFIle);
+                user.addFile(dbFIle);
+                userRepo.save(user);
+            }
         }
         catch (Exception e){ e.printStackTrace(); }
     }
 
     public void delete(Long file_id){
+        try {
+            //todo обработать потом правильно удаление с возможным вылетом ошибки
 
-        var file = fileRepo.findById(file_id).get();
-        var user = userRepo.fildUserByFile(file_id).get();
-        user.deleteFile(file);
-        fileRepo.delete(file);
+            var file = fileRepo.findById(file_id).get();
+            var user = userRepo.fildUserByFile(file_id).get();
+
+            if (storageService.delete(file.getFileName(), user.getId())) {
+                user.deleteFile(file);
+                fileRepo.delete(file);
+            }
+        } catch(Exception e){e.printStackTrace();}
 
     }
 
-    public class SizeCalculator{
+    public static class SizeCalculator{
         public static String calculate(Long size){
             double d = size.doubleValue()/(1024D*1024D);
             return String.format("%.2f", d);

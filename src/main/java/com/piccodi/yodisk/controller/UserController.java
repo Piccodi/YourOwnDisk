@@ -12,15 +12,13 @@ import org.springframework.web.bind.annotation.*;
 @SessionAttributes("userDetails")
 public class UserController {
 
-    UserService userService;
+    private UserService userService;
 
     @Autowired
     public void setUserService(UserService userService){
         this.userService = userService;
     }
 
-
-    //fixme в форме доделать запрос на авторизацию!
     @GetMapping("/auth")
     public String authorize(@ModelAttribute("user") User user ){
         return "auth";

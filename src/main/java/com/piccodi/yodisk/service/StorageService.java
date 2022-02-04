@@ -1,16 +1,10 @@
 package com.piccodi.yodisk.service;
 
 import com.piccodi.yodisk.entity.User;
-import com.piccodi.yodisk.repo.UserRepo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-
 import javax.annotation.PostConstruct;
-import javax.servlet.http.HttpServletRequest;
-import java.io.File;
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -30,8 +24,7 @@ public class StorageService {
         }
     }
 
-    public void upload(MultipartFile file, User user) throws IOException {
-
+    public boolean upload(MultipartFile file, User user) throws IOException {
 
         Path filesPath = Paths.get(fileDestination + "/" + user.getId());
         System.out.println(filesPath);
@@ -48,7 +41,18 @@ public class StorageService {
 
         file.transferTo(filePath);
 
+        return true;
 
+    }
+
+    public boolean delete(String fileName, Long userId) throws IOException {
+        Path filePath = Paths.get(fileDestination + "/" + userId + "/" + fileName);
+        if (Files.exists(filePath)){
+            Files.delete(filePath);
+            System.out.println(filePath);
+        }
+
+        return true;
     }
 
 }
