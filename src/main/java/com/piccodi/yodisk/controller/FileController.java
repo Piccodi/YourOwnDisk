@@ -3,6 +3,9 @@ package com.piccodi.yodisk.controller;
 import com.piccodi.yodisk.entity.File;
 import com.piccodi.yodisk.service.FileService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -32,10 +35,19 @@ public class FileController {
 
     @PostMapping()
     public String saveFile(MultipartFile file, Principal principal){
+
         if(!file.isEmpty()){
             fileService.saveFile(file, principal);
         }
         return"redirect:/files";
+    }
+
+    @PostMapping("/download")
+    @ResponseBody
+    public ResponseEntity<Resource> downloadFile(@RequestParam("id") Long fileId, Principal principal){
+
+        return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" +
+        fileService.getNameFile(fileId) + "\"").body(fileService.downloadFile(fileId, principal));
     }
 
     @PostMapping("/delete")

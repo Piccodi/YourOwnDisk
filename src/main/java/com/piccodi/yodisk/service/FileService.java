@@ -4,12 +4,14 @@ import com.piccodi.yodisk.entity.File;
 import com.piccodi.yodisk.repo.FileRepo;
 import com.piccodi.yodisk.repo.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.net.URISyntaxException;
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.Optional;
 
 @Service
 public class FileService {
@@ -38,6 +40,10 @@ public class FileService {
         return fileRepo.getUserFiles(userRepo.findUserIdByUsername(principal.getName()).get()).get();
     }
 
+    public String getNameFile(Long id){
+        return fileRepo.findById(id).get().getFileName();
+    }
+
     public void saveFile(MultipartFile file, Principal principal) {
         try{
             //todo сделать обработку else для if на сохранение в бд
@@ -53,6 +59,19 @@ public class FileService {
             }
         }
         catch (Exception e){ e.printStackTrace(); }
+    }
+
+    public Resource downloadFile(Long fileId, Principal principal){
+//todo почему блять эксепшн че с ним делать?
+        Resource resource = null;
+        try {
+            var file = fileRepo.findById(fileId).get();
+            var user = userRepo.findByUsername(principal.getName()).get();
+            resource = storageService.download(file.getFileName(), user.getId());
+        } catch (Exception e){e.printStackTrace();}
+
+        return resource;
+
     }
 
     public void delete(Long file_id){

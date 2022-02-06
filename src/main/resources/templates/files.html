@@ -38,6 +38,12 @@
                     <input type="submit" value="Delete" class="btn btn-primary">
                 </form>
             </td>
+            <td>
+                <form th:action="@{/files/download}" method="post">
+                    <input type="hidden" name="id" th:value="${file.id}">
+                    <input type="submit" value="Download" class="btn btn-primary">
+                </form>
+            </td>
         </tr>
     </table>
 

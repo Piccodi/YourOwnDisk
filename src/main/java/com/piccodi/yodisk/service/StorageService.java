@@ -1,13 +1,18 @@
 package com.piccodi.yodisk.service;
 
 import com.piccodi.yodisk.entity.User;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.PostConstruct;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Optional;
 
 @Service
 public class StorageService {
@@ -43,6 +48,18 @@ public class StorageService {
 
         return true;
 
+    }
+
+    public Resource download(String fileName, Long userId) throws FileNotFoundException, MalformedURLException {
+
+
+            Path pathFile = Paths.get(fileDestination + "/" + userId + "/" + fileName);
+            if(Files.exists(pathFile)){
+                return new UrlResource(pathFile.toUri());
+            }
+            else{
+                throw new FileNotFoundException();
+            }
     }
 
     public boolean delete(String fileName, Long userId) throws IOException {
