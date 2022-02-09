@@ -15,6 +15,9 @@ public interface UserRepo extends CrudRepository<User, Long> {
 
     @Query(nativeQuery = true,
     value = "SELECT user.id, user.username, user.password, user.role FROM user INNER JOIN user_files WHERE files_id = ?1")
-    Optional<User> fildUserByFile(Long file_id);
+    Optional<User> findUserByFile(Long file_id);
 
+    @Query(nativeQuery = true,
+    value = "select exists (select * from user inner join user_files on user.id = user_id where files_id = ?1 and user.username = ?2);")
+    int checkForOwning(long fileId, String username);
 }

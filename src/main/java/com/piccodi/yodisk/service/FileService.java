@@ -7,11 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.net.URISyntaxException;
 import java.security.Principal;
 import java.util.ArrayList;
-import java.util.Optional;
 
 @Service
 public class FileService {
@@ -20,7 +17,12 @@ public class FileService {
 
     private UserRepo userRepo;
 
+    private LinkService linkService;
+
     private StorageService storageService;
+
+    @Autowired
+    public void setLinkService(LinkService linkService) {this.linkService = linkService;}
 
     @Autowired
     public void setStorageService(StorageService storageService) {this.storageService = storageService;}
@@ -62,7 +64,7 @@ public class FileService {
     }
 
     public Resource downloadFile(Long fileId, Principal principal){
-//todo почему блять эксепшн че с ним делать?
+
         Resource resource = null;
         try {
             var file = fileRepo.findById(fileId).get();
@@ -74,12 +76,19 @@ public class FileService {
 
     }
 
+    public String generateLink(Long fileId, Principal principal){
+        if(userRepo.checkForOwning(fileId, principal.getName()) == 1){
+            linkService.createLink(fileId, principal.getName());
+        }
+        return " ";
+    }
+
     public void delete(Long file_id){
         try {
             //todo обработать потом правильно удаление с возможным вылетом ошибки
 
             var file = fileRepo.findById(file_id).get();
-            var user = userRepo.fildUserByFile(file_id).get();
+            var user = userRepo.findUserByFile(file_id).get();
 
             if (storageService.delete(file.getFileName(), user.getId())) {
                 user.deleteFile(file);
