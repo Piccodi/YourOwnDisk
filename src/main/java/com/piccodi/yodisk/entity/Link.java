@@ -1,16 +1,15 @@
 package com.piccodi.yodisk.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class Link {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String key;
+
+    private String name;
     private long deathTime;
 
     public Long getId() {
@@ -22,11 +21,11 @@ public class Link {
     }
 
     public String getKey() {
-        return key;
+        return name;
     }
 
     public void setKey(String key) {
-        this.key = key;
+        this.name = key;
     }
 
     public long getDeathTime() {
