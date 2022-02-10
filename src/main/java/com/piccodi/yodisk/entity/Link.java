@@ -12,6 +12,17 @@ public class Link {
     private String name;
     private long deathTime;
 
+    @OneToOne
+    private File file;
+
+    public File getFile() {
+        return file;
+    }
+
+    public void setFile(File file) {
+        this.file = file;
+    }
+
     public Long getId() {
         return id;
     }

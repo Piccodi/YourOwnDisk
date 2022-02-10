@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.io.FileNotFoundException;
 import java.security.Principal;
 import java.util.ArrayList;
 
@@ -76,11 +78,13 @@ public class FileService {
 
     }
 
-    public String generateLink(Long fileId, Principal principal){
+    public String generateLink(Long fileId, Principal principal) throws FileNotFoundException {
         if(userRepo.checkForOwning(fileId, principal.getName()) == 1){
-            linkService.createLink(fileId, principal.getName());
+            return linkService.createLink(fileId, principal.getName());
         }
-        return " ";
+        else{
+            throw new FileNotFoundException();
+        }
     }
 
     public void delete(Long file_id){

@@ -23,7 +23,9 @@ public class User {
         files.add(file);
     }
 
-    public void deleteFile(File file){files.remove(file);}
+    public void deleteFile(File file){
+        files.remove(file);
+    }
 
     public Set<File> getFileSet() {
         return files;

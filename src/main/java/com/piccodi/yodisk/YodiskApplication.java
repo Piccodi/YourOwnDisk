@@ -11,3 +11,5 @@ public class YodiskApplication {
 	}
 
 }
+
+//todo сделать нормальную обработку ошибок!!!
