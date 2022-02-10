@@ -13,6 +13,6 @@ public interface LinkRepo extends CrudRepository<Link, Long> {
     int checkForExistance (long fileId);
 
     @Query(nativeQuery = true,
-    value = "select id, death_time, name from link where file_id = ?1")
-    Optional<Link> findByFileId(Long fileId);
+    value = "select * from link where file_id = ?1")
+    Optional<Link> findByFile(Long fileId);
 }

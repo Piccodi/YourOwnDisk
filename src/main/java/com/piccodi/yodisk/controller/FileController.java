@@ -48,9 +48,9 @@ public class FileController {
     }
 
     @PostMapping("/share")
-    public String shareFile(@RequestParam("id")Long fileId, Principal principal){
+    public String shareFile(@RequestParam("id")Long fileId, Principal principal, Model model){
         try {
-            fileService.generateLink(fileId, principal);
+            model.addAttribute("link", fileService.generateLink(fileId, principal));
         }
         catch (Exception e){e.printStackTrace();}
 

@@ -7,17 +7,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
+
 @Service
 public class LinkService {
 
     private LinkRepo linkRepo;
 
-    private FileRepo fileRepo;
-
     private Pbkdf2PasswordEncoder linkEncoder;
 
     @Autowired
-    public void setFileRepo(FileRepo fileRepo) {this.fileRepo = fileRepo;}
+    private HttpServletRequest request;
 
     @Autowired
     public void setLinkEncoder(Pbkdf2PasswordEncoder linkEncoder) {
@@ -30,22 +30,23 @@ public class LinkService {
     }
 
     public String createLink(long fileId, String username){
-//todo сделать проверку на существование и перезапись новой вместо старой
+
+        //todo генерировать норм ссылки, а не обрубки
 
         Link link;
-        if(linkRepo.findByFileId(fileId).isPresent()){
-            link = linkRepo.findByFileId(fileId).get();
+
+        if(linkRepo.findByFile(fileId).isPresent()){
+            link = linkRepo.findByFile(fileId).get();
         } else {
             link = new Link();
-            link.setFile(fileRepo.findById(fileId).get());
+            link.setFileId(fileId);
         }
 
-        System.out.println(System.currentTimeMillis());
         var birthTime = System.currentTimeMillis();
         link.setKey(linkEncoder.encode(fileId + username + birthTime));
         link.setDeathTime(birthTime + (60 * 60) * 1000);
         linkRepo.save(link);
-        System.out.println(link.getId());
+        System.out.println(request.getHeader("host"));
         return link.getKey();
     }
 }

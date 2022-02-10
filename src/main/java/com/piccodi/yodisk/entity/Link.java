@@ -12,15 +12,16 @@ public class Link {
     private String name;
     private long deathTime;
 
-    @OneToOne
-    private File file;
+    //fixme поменять отношение onetoone к файлам а не к ссылкам
 
-    public File getFile() {
-        return file;
+    private Long fileId;
+
+    public Long getFileId() {
+        return fileId;
     }
 
-    public void setFile(File file) {
-        this.file = file;
+    public void setFileId(Long fileId) {
+        this.fileId = fileId;
     }
 
     public Long getId() {
