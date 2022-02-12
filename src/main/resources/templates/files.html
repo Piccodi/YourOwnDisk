@@ -47,13 +47,13 @@
             <td>
                 <form th:action="@{/files/share}" method="post">
                     <input type="hidden" name="id" th:value="${file.id}">
-                    <input type="submit" value="Generate link" class="btn btn-primary">
+                    <input type="submit" value="Generate link" onclick="btnClick();" class="btn btn-primary">
                 </form>
+
             </td>
+
         </tr>
     </table>
-
-</div>
 
 </body>
 </html>

@@ -21,8 +21,8 @@ public class StorageService {
 
     @PostConstruct
     private void construct() throws IOException {
+
         fileDestination = Paths.get("/home/" + System.getProperty("user.name") + "/Downloads/yodisk");
-        System.out.println(fileDestination);
         if(!Files.exists(fileDestination)){
             Files.createDirectory(fileDestination);
             System.out.println(fileDestination);

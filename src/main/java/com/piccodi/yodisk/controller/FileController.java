@@ -25,8 +25,7 @@ public class FileController {
     @GetMapping()
     public String getFiles(Model model, Principal principal){
 
-        var files = fileService.get(principal);
-        model.addAttribute("files", files);
+        model.addAttribute("files", fileService.get(principal));
         return "files";
     }
 
@@ -47,14 +46,17 @@ public class FileController {
         fileService.getNameFile(fileId) + "\"").body(fileService.downloadFile(fileId, principal));
     }
 
+    //fixme не удается получить ссылку на странице
+    // и сделать отдельную страницу с сообщением о копировании в буфер ссылки, а то не удается это сделать на странице с файлами
+
     @PostMapping("/share")
     public String shareFile(@RequestParam("id")Long fileId, Principal principal, Model model){
         try {
-            model.addAttribute("link", fileService.generateLink(fileId, principal));
+             model.addAttribute("ref", fileService.generateLink(fileId, principal));
         }
         catch (Exception e){e.printStackTrace();}
 
-        return"redirect:/files";
+        return"/links";
     }
 
     @PostMapping("/delete")
@@ -63,4 +65,6 @@ public class FileController {
         fileService.delete(id);
         return"redirect:/files";
     }
+
+
 }
