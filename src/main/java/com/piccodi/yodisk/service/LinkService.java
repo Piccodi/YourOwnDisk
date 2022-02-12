@@ -41,7 +41,7 @@ public class LinkService {
         link.setKey(linkEncoder.encode(fileId + username + birthTime));
         link.setDeathTime(birthTime + (60 * 60) * 1000);
         linkRepo.save(link);
-        System.out.println("https://" + request.getHeader("host") + "/share/" + link.getKey());
-        return ("https://" + request.getHeader("host") + "/share/" + link.getKey());
+        System.out.println("https://" + request.getHeader("host") + "/files/download/" + link.getKey());
+        return ("https://" + request.getHeader("host") + "/files/download/" + link.getKey());
     }
 }

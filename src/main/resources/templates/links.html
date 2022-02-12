@@ -10,8 +10,17 @@
           integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
           crossorigin="anonymous" />
     <title>Title</title>
+    <script th:inline="javascript">
+        const link = [[${ref}]];
+        function copy_to_clipboard(){
+            if (link) {
+                navigator.clipboard.writeText(link)
+            }
+        }
+    </script>
 </head>
 <body>
-
+    <td style="max-width: 350px; margin: 0 auto;" th:text="${ref}" ></td>
+    <input type="button" onclick="copy_to_clipboard()" value="Copy to clipboard" class="btn btn-primary"/>
 </body>
 </html>

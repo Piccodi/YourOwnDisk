@@ -15,9 +15,4 @@ public class MainController {
         return "main";
     }
 
-    @GetMapping("/share/{key}")
-    public void download(@PathVariable("key") String key ){
-
-       // return " ";
-    }
 }

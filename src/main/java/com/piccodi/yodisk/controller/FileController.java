@@ -46,8 +46,11 @@ public class FileController {
         fileService.getNameFile(fileId) + "\"").body(fileService.downloadFile(fileId, principal));
     }
 
-    //fixme не удается получить ссылку на странице
-    // и сделать отдельную страницу с сообщением о копировании в буфер ссылки, а то не удается это сделать на странице с файлами
+    @GetMapping("/download/{key}")
+    public String download(@PathVariable("key") String key ){
+
+         return "/main";
+    }
 
     @PostMapping("/share")
     public String shareFile(@RequestParam("id")Long fileId, Principal principal, Model model){
