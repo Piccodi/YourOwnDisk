@@ -12,6 +12,8 @@ public interface FileRepo extends CrudRepository<File, Long> {
     value = "SELECT file.id, file.file_name, file.size FROM user_files INNER JOIN file ON files_id = file.id WHERE user_id = ?1")
     Optional<ArrayList<File>> getUserFiles(Long user_id);
 
-
+    @Query(nativeQuery = true,
+    value = " select file_name from file where id = ?1")
+    Optional<String> findFileNameById(Long id);
 
 }

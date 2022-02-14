@@ -28,6 +28,8 @@ public class LinkService {
         this.linkRepo = linkRepo;
     }
 
+    public long getFileIdByKey(String key) { return linkRepo.getFileIdByKey(key).get();}
+
     public String createLink(long fileId, String username){
 
         Link link;
@@ -43,5 +45,11 @@ public class LinkService {
         linkRepo.save(link);
         System.out.println("https://" + request.getHeader("host") + "/files/download/" + link.getKey());
         return ("https://" + request.getHeader("host") + "/files/download/" + link.getKey());
+    }
+
+    public void deleteLink(String key){
+        if(linkRepo.findLinkByName(key).isPresent()) {
+            linkRepo.delete(linkRepo.findLinkByName(key).get());
+        }
     }
 }

@@ -1,6 +1,7 @@
 package com.piccodi.yodisk.controller;
 
 import com.piccodi.yodisk.service.FileService;
+import com.piccodi.yodisk.service.LinkService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -43,13 +44,15 @@ public class FileController {
     public ResponseEntity<Resource> downloadFile(@RequestParam("id") Long fileId, Principal principal){
 
         return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" +
-        fileService.getNameFile(fileId) + "\"").body(fileService.downloadFile(fileId, principal));
+                fileService.getNameFile(fileId) + "\"").body(fileService.downloadFileById(fileId, principal));
     }
 
     @GetMapping("/download/{key}")
-    public String download(@PathVariable("key") String key ){
+    public ResponseEntity<Resource> download(@PathVariable("key") String key ){
 
-         return "/main";
+        var resource = fileService.downloadFileByKey(key);
+        return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" +
+                resource.getFilename() + "\"").body(resource);
     }
 
     @PostMapping("/share")

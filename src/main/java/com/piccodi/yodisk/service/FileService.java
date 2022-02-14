@@ -65,17 +65,32 @@ public class FileService {
         catch (Exception e){ e.printStackTrace(); }
     }
 
-    public Resource downloadFile(Long fileId, Principal principal){
+    public Resource downloadFileById(Long fileId, Principal principal){
 
         Resource resource = null;
         try {
-            var file = fileRepo.findById(fileId).get();
-            var user = userRepo.findByUsername(principal.getName()).get();
-            resource = storageService.download(file.getFileName(), user.getId());
+            resource = storageService.download(
+                    fileRepo.findFileNameById(fileId).get(),
+                    userRepo.findUserIdByUsername(principal.getName()).get()
+            );
         } catch (Exception e){e.printStackTrace();}
 
         return resource;
 
+    }
+
+    public Resource downloadFileByKey(String key){
+
+        Resource resource = null;
+        try {
+            var fileId = linkService.getFileIdByKey(key);
+            resource = storageService.download(
+                    fileRepo.findFileNameById(fileId).get(),
+                    userRepo.findUserIdByFileId(fileId).get());
+            linkService.deleteLink(key);
+        } catch (Exception e){e.printStackTrace();}
+
+        return resource;
     }
 
     public String generateLink(Long fileId, Principal principal) throws FileNotFoundException {
@@ -92,7 +107,7 @@ public class FileService {
             //todo обработать потом правильно удаление с возможным вылетом ошибки
 
             var file = fileRepo.findById(file_id).get();
-            var user = userRepo.findUserByFile(file_id).get();
+            var user = userRepo.findUserByFileId(file_id).get();
 
             if (storageService.delete(file.getFileName(), user.getId())) {
                 user.deleteFile(file);
