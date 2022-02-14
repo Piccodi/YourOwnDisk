@@ -1,7 +1,6 @@
 package com.piccodi.yodisk.controller;
 
 import com.piccodi.yodisk.service.FileService;
-import com.piccodi.yodisk.service.LinkService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
