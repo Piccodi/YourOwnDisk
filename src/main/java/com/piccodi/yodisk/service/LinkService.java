@@ -5,6 +5,7 @@ import com.piccodi.yodisk.repo.LinkRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.scheduling.annotation.Scheduled;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -50,6 +51,19 @@ public class LinkService {
     public void deleteLink(String key){
         if(linkRepo.findLinkByName(key).isPresent()) {
             linkRepo.delete(linkRepo.findLinkByName(key).get());
+        }
+    }
+
+    @Scheduled(initialDelay = 3000, fixedRate = 600000)
+    public void invalidLinksCleaner() {
+
+        System.out.println("clean");
+        var currentTime = System.currentTimeMillis();
+        if (linkRepo.getAllLinks().isPresent()) {
+            linkRepo.getAllLinks().get().stream()
+                    .filter(l -> l.getDeathTime() <= currentTime)
+                    .forEach(l -> linkRepo.delete(l));
+
         }
     }
 }
