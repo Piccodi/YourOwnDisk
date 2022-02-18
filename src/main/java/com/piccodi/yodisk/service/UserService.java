@@ -1,6 +1,7 @@
 package com.piccodi.yodisk.service;
 
 import com.piccodi.yodisk.entity.User;
+import com.piccodi.yodisk.exception.UserAlreadyExistException;
 import com.piccodi.yodisk.permissions.Role;
 import com.piccodi.yodisk.repo.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,7 @@ public class UserService {
         this.userRepo = userRepo;
     }
 
-    public void save(User user){
+    public void save(User user) throws UserAlreadyExistException {
         //todo разобраться как обрабатывать ошибки в шоблонах
 
         if(userRepo.findByUsername(user.getUsername()).isEmpty()){
@@ -32,6 +33,8 @@ public class UserService {
             System.out.println(user.getPassword());
             user.setRole(Role.USER);
             userRepo.save(user);
+        } else{
+            throw new UserAlreadyExistException("username already used");
         }
 
     }

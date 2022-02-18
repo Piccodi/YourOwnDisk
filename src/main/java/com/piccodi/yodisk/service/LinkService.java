@@ -66,4 +66,8 @@ public class LinkService {
 
         }
     }
+
+    public boolean checkForValidity(String key) {
+        return linkRepo.findLinkByName(key).isPresent();
+    }
 }

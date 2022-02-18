@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.net.MalformedURLException;
 import java.security.Principal;
 import java.util.ArrayList;
 
@@ -48,48 +50,33 @@ public class FileService {
         return fileRepo.findById(id).get().getFileName();
     }
 
-    public void saveFile(MultipartFile file, Principal principal) {
-        try{
-            //todo сделать обработку else для if на сохранение в бд
+    public void saveFile(MultipartFile file, Principal principal) throws IOException {
+
             var user = userRepo.findByUsername(principal.getName()).get();
             var dbFIle = new File();
             dbFIle.setFileName(file.getOriginalFilename());
             dbFIle.setSize( SizeCalculator.calculate(file.getSize()) + " MB");
             if(storageService.upload(file, user)) {
-
                 fileRepo.save(dbFIle);
                 user.addFile(dbFIle);
                 userRepo.save(user);
             }
-        }
-        catch (Exception e){ e.printStackTrace(); }
     }
 
-    public Resource downloadFileById(Long fileId, Principal principal){
+    public Resource downloadFileById(Long fileId, Principal principal) throws FileNotFoundException, MalformedURLException {
 
-        Resource resource = null;
-        try {
-            resource = storageService.download(
-                    fileRepo.findFileNameById(fileId).get(),
-                    userRepo.findUserIdByUsername(principal.getName()).get()
-            );
-        } catch (Exception e){e.printStackTrace();}
-
-        return resource;
-
+        return storageService.download(
+                fileRepo.findFileNameById(fileId).get(),
+                userRepo.findUserIdByUsername(principal.getName()).get());
     }
 
-    public Resource downloadFileByKey(String key){
+    public Resource downloadFileByKey(String key) throws FileNotFoundException, MalformedURLException {
 
-        Resource resource = null;
-        try {
             var fileId = linkService.getFileIdByKey(key);
-            resource = storageService.download(
+            var resource = storageService.download(
                     fileRepo.findFileNameById(fileId).get(),
                     userRepo.findUserIdByFileId(fileId).get());
             linkService.deleteLink(key);
-        } catch (Exception e){e.printStackTrace();}
-
         return resource;
     }
 
@@ -102,19 +89,14 @@ public class FileService {
         }
     }
 
-    public void delete(Long file_id){
-        try {
-            //todo обработать потом правильно удаление с возможным вылетом ошибки
+    public void delete(Long file_id) throws IOException {
 
             var file = fileRepo.findById(file_id).get();
             var user = userRepo.findUserByFileId(file_id).get();
-
             if (storageService.delete(file.getFileName(), user.getId())) {
                 user.deleteFile(file);
                 fileRepo.delete(file);
             }
-        } catch(Exception e){e.printStackTrace();}
-
     }
 
     public static class SizeCalculator{

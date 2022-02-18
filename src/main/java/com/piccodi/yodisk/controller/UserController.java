@@ -1,6 +1,7 @@
 package com.piccodi.yodisk.controller;
 
 import com.piccodi.yodisk.entity.User;
+import com.piccodi.yodisk.exception.UserAlreadyExistException;
 import com.piccodi.yodisk.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -30,7 +31,8 @@ public class UserController {
     }
 
     @PostMapping("/new")
-    public String saveUser(@ModelAttribute("user") User user){
+    public String saveUser(@ModelAttribute("user") User user) throws UserAlreadyExistException {
+
         userService.save(user);
         return "redirect:/";
     }
