@@ -21,6 +21,24 @@
 </head>
 <body>
     <td style="max-width: 350px; margin: 0 auto;" th:text="${ref}" ></td>
-    <input type="button" onclick="copy_to_clipboard()" value="Copy to clipboard" class="btn btn-primary"/>
+    <input type="button" onclick="copy_to_clipboard()" value="Copy to clipboard" class="btn"/>
 </body>
+<style>
+    body{
+        background:  #CED4DA;
+    }
+
+    .btn{
+        color: #FAE1DF; /* цвет текста */
+        text-decoration: none; /* убирать подчёркивание у ссылок */
+        user-select: none; /* убирать выделение текста */
+        background: #0D1F2D; /* фон кнопки */
+        padding: .7em 1.5em; /* отступ от текста */
+        outline: none; /* убирать контур в Mozilla */
+        flex: 0 1 150px;
+        margin: 5px;
+    }
+    .btn:hover{ background: rgb(232,95,76); }
+    .btn:active { background: rgb(152,15,0); }
+</style>
 </html>
