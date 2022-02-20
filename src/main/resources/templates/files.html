@@ -10,50 +10,113 @@
     <title>Title</title>
 </head>
 <body>
-    <form th:action="@{/}" method="get" style="max-width: 350px; margin: 0 auto;">
-        <input type="submit" value="Menu" class="btn btn-primary">
-    </form>
-    <form th:action="@{/user/logout}" method="post" style="max-width: 350px; margin: 0 auto;">
-        <input type="submit" value="Logout" class="btn btn-primary">
-    </form>
-    <div style="max-width: 350px; margin: 0 auto;">
-        <form method="POST" enctype="multipart/form-data" th:action="@{/files}">
-            <input type="file" name="file"><br/><br/>
-            <button type="submit" class="btn btn-primary">Save file</button>
+    <div class="navbar">
+        <h1 style="padding: 5px">Yodisk</h1>
+        <form th:action="@{/}" method="get" style="max-width: 350px; margin: 0 auto;">
+            <input type="submit" value="Menu" class="btn">
+        </form>
+        <form th:action="@{/user/logout}" method="post" style="max-width: 350px; margin: 0 auto;">
+            <input type="submit" value="Logout" class="btn" >
         </form>
     </div>
-    <h1 style="max-width: 350px; margin: 0 auto;">FIles</h1>
+    <div style="max-width: 350px; margin: 0 auto;">
+        <h2>Save new file:</h2>
+        <form method="POST" enctype="multipart/form-data" th:action="@{/files}">
+            <input type="file" name="file" class="btn">
+            <button type="submit" class="btn">Save file</button>
+        </form>
+    </div>
+    <br/>
+    <h1 style="max-width: 350px; margin: 0 auto;">Files:</h1>
 
-    <table style="margin: 0 auto;">
+    <table class="table">
         <tr>
             <th>NAME</th>
             <th>SIZE</th>
+            <th></th>
+            <th></th>
+            <th></th>
         </tr>
-        <tr th:each="file : ${files}">
+        <tr class="custom_row" th:each="file : ${files}">
             <td th:text="${file.fileName}" ></td>
             <td th:text="${file.size}" ></td>
             <td>
                 <form th:action="@{/files/delete}" method="post">
                     <input type="hidden" name="id" th:value="${file.id}">
-                    <input type="submit" value="Delete" class="btn btn-primary">
+                    <input type="submit" value="Delete" class="btn">
                 </form>
             </td>
             <td>
                 <form th:action="@{/files/download}" method="post">
                     <input type="hidden" name="id" th:value="${file.id}">
-                    <input type="submit" value="Download" class="btn btn-primary">
+                    <input type="submit" value="Download" class="btn">
                 </form>
             </td>
             <td>
                 <form th:action="@{/files/share}" method="post">
                     <input type="hidden" name="id" th:value="${file.id}">
-                    <input type="submit" value="Generate link" onclick="btnClick();" class="btn btn-primary">
+                    <input type="submit" value="Generate link" onclick="btnClick();" class="btn">
                 </form>
 
             </td>
-
         </tr>
     </table>
 
+
 </body>
+<style>
+
+    .navbar{
+        margin: 0 auto;
+        width: 370px;
+        display: flex;
+        justify-content: center;
+    }
+    body{
+        background:  #CED4DA;
+    }
+
+    .btn{
+        color: #FAE1DF; /* цвет текста */
+        text-decoration: none; /* убирать подчёркивание у ссылок */
+        user-select: none; /* убирать выделение текста */
+        background: #0D1F2D; /* фон кнопки */
+        padding: .7em 1.5em; /* отступ от текста */
+        outline: none; /* убирать контур в Mozilla */
+        flex: 0 1 150px;
+        margin: 5px;
+    }
+    .btn:hover{ background: rgb(232,95,76); }
+    .btn:active { background: rgb(152,15,0); }
+    table{
+
+    }
+    .table {
+        width: 100%;
+        margin: 0 auto 20px;
+        border-collapse: collapse;
+        border-radius: 1rem;
+    }
+    .table th {
+        color:  #FAE1DF;
+        margin: 0 auto;
+        text-align: center;
+        font-weight: bold;
+        padding: 5px;
+        background: #495057;
+        border: none;
+        border-bottom: 3px solid #ADB5BD;
+
+    }
+    .table td {
+        margin: 0 auto;
+        text-align: center;
+        padding: 3px;
+        border: none;
+        border-bottom: 3px solid #ADB5BD;
+
+    }
+
+</style>
+
 </html>

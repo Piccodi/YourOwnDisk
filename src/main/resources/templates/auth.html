@@ -12,9 +12,9 @@
 <body>
 <div style="max-width: 350px; margin: 0 auto;">
     <form th:action="@{/}" method="get" style="max-width: 350px; margin: 0 auto;">
-        <input type="submit" value="Menu" class="btn btn-primary">
+        <input type="submit" value="Menu" class="btn">
     </form>
-<h1>Please Log In</h1>
+<h1>Please Sign in</h1>
     <div th:if="${param.error}">
 			Invalid username or password.</div>
 		<div th:if="${param.logout}">
@@ -26,8 +26,25 @@
         <div>
         <input type="password" name="password" th:field="*{password}" class="form-control" placeholder="Password" required/>
         </div>
-        <input type="submit" value="Log in" class="btn btn-primary"/>
+        <input type="submit" value="Log in" class="btn"/>
     </form>
 </div>
 </body>
+<style>
+    body{
+        background:  #CED4DA;
+    }
+    .btn{
+        color: #FAE1DF; /* цвет текста */
+        text-decoration: none; /* убирать подчёркивание у ссылок */
+        user-select: none; /* убирать выделение текста */
+        background: #0D1F2D; /* фон кнопки */
+        padding: .7em 1.5em; /* отступ от текста */
+        outline: none; /* убирать контур в Mozilla */
+        flex: 0 1 150px;
+        margin: 5px;
+    }
+    .btn:hover{ background: rgb(232,95,76); }
+    .btn:active { background: rgb(152,15,0); }
+</style>
 </html>

@@ -10,10 +10,38 @@
 </head>
 <body>
 <div class="container-fluid text-center">
-    <h4 class="text-center"><a href="/user/auth">Login</a></h4>
-    <h4 class="text-center"><a href="/user/new">Sign Up</a></h4>
-    <h4 class="text-center"><a href="/files">Your files</a></h4>
-    <p>It is your own file storage</p>
+    <h1>Yodisk</h1>
+    <h2 class="text-center"><a class="btn" href="/user/auth">Sigh IN</a></h2>
+    <h2 class="text-center"><a class="btn" href="/user/new">Sign UP</a></h2>
+    <h2 class="text-center"><a class="btn" href="/files">Your files</a></h2>
+
 </div>
+
 </body>
+<style>
+    body{
+        background:  #CED4DA;
+    }
+    h1{
+        margin: 5px;
+    }
+    div{
+        background: #CED4DA;
+        width: 300px;
+        display: flex;
+        justify-content: center;
+    }
+    a.btn{
+        color: #FAE1DF; /* цвет текста */
+        text-decoration: none; /* убирать подчёркивание у ссылок */
+        user-select: none; /* убирать выделение текста */
+        background: #0D1F2D; /* фон кнопки */
+        padding: .7em 1.5em; /* отступ от текста */
+        outline: none; /* убирать контур в Mozilla */
+        flex: 0 1 150px;
+        margin: 5px;
+    }
+    a.btn:hover{ background: rgb(232,95,76); }
+    a.btn:active { background: rgb(152,15,0); }
+</style>
 </html>

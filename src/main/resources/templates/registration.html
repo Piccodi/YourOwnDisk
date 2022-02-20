@@ -12,19 +12,41 @@
 <body>
     <div>
         <form th:action="@{/}" method="get" style="max-width: 350px; margin: 0 auto;">
-            <input type="submit" value="Menu" class="btn btn-primary">
+            <input type="submit" value="Menu" class="btn">
         </form>
+        <h1>Create new account:</h1>
         <form th:action="@{/user/new}" method="post" th:object="${user}" style="max-width: 350px; margin: 0 auto;">
-            <div class="border border-secondary p-3 rounded">
-                <input type="text" name="username" th:field="*{username}" class="form-control" placeholder="Username" required/>
-                <input type="password" name="password" th:field="*{password}" class="form-control" onchange="if(this.checkValidity()) form.conf_pass.pattern = this.value;" placeholder="Password" required/>
-                <input type="password" name="conf_pass" class="form-control" onchange="this.setCustomValidity(this.validity.patternMismatch ? 'Please enter the same Password as above' : '');" placeholder="Verify Password" required/>
+            <div>
+                <input type="text" name="username" minlength="6" th:field="*{username}" class="form-control" placeholder="Username" required/>
+                <input type="password" name="password" minlength="6" th:field="*{password}" class="form-control" onchange="if(this.checkValidity()) form.conf_pass.pattern = this.value;" placeholder="Password" required/>
+                <input type="password" name="conf_pass" minlength="6" class="form-control" onchange="this.setCustomValidity(this.validity.patternMismatch ? 'Please enter the same Password as above' : '');" placeholder="Verify Password" required/>
 
             </div>
             <div>
-                <input type="submit" value="Sigh up" class="btn btn-primary">
+                <input type="submit" value="Sign up" class="btn">
             </div>
         </form>
     </div>
 </body>
+<style>
+    h1{
+       max-width: 368px;
+        margin: 0 auto;
+    }
+    body{
+        background:  #CED4DA;
+    }
+    .btn{
+        color: #FAE1DF; /* цвет текста */
+        text-decoration: none; /* убирать подчёркивание у ссылок */
+        user-select: none; /* убирать выделение текста */
+        background: #0D1F2D; /* фон кнопки */
+        padding: .7em 1.5em; /* отступ от текста */
+        outline: none; /* убирать контур в Mozilla */
+        flex: 0 1 150px;
+        margin: 5px;
+    }
+    .btn:hover{ background: rgb(232,95,76); }
+    .btn:active { background: rgb(152,15,0); }
+</style>
 </html>
