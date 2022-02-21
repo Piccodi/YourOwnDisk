@@ -15,10 +15,12 @@ class GlobalDefaultExceptionHandler {
     @ExceptionHandler(value = Exception.class)
     public ModelAndView defaultErrorHandler(HttpServletRequest req, Exception e) throws Exception {
 
+        e.printStackTrace();
         if (AnnotationUtils.findAnnotation(e.getClass(), ResponseStatus.class) != null)
             throw e;
 
-        e.printStackTrace();
+        //todo доработать обработку ошибок
+
         ModelAndView mav = new ModelAndView();
         mav.addObject("exception", e);
         mav.addObject("url", req.getRequestURL());
