@@ -25,6 +25,10 @@
         th:if="${error}" th:text="'('+${error}+')'">error ...</span>
 </p>
 
+<p>
+    <span th:text="${exception.message}">Timestamp</span>
+</p>
+
 <div th:utext="'&lt;!--'" th:remove="tag"></div>
 <div th:utext="'Failed URL: ' +  ${url}" th:remove="tag">${url}</div>
 <div th:utext="'Exception: ' + ${exception.message}" th:remove="tag">${exception.message}</div>

@@ -11,7 +11,7 @@ public class ErrorResponse {
         else if(e instanceof FileNotFoundException) return "File does not exist";
         else if(e instanceof IOException) return "Failed to save file";
         else if(e instanceof InvalidLinkException) return "Invalid link";
+        else if(e instanceof UserAlreadyExistException) return "User already exist";
         else {return "Unexpected error";}
     }
-
 }

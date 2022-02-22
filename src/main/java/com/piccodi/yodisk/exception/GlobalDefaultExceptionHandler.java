@@ -1,28 +1,25 @@
 package com.piccodi.yodisk.exception;
 
-import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
-
 import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 
 @ControllerAdvice
 class GlobalDefaultExceptionHandler {
     public static final String DEFAULT_ERROR_VIEW = "support";
 
     @ExceptionHandler(value = Exception.class)
-    public ModelAndView defaultErrorHandler(HttpServletRequest req, Exception e) throws Exception {
+    public ModelAndView defaultErrorHandler(HttpServletRequest req, Exception e){
 
         e.printStackTrace();
-        if (AnnotationUtils.findAnnotation(e.getClass(), ResponseStatus.class) != null)
-            throw e;
-
-        //todo доработать обработку ошибок
-
         ModelAndView mav = new ModelAndView();
         mav.addObject("exception", e);
+        mav.addObject("timestamp", new Date());
+        if(e instanceof CustomResponseException){
+            mav.addObject("status", ((CustomResponseException) e).getHttpStatus().value());
+        }
         mav.addObject("url", req.getRequestURL());
         mav.setViewName(DEFAULT_ERROR_VIEW);
         return mav;

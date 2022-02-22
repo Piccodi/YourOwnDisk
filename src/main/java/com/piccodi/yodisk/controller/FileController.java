@@ -14,10 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.security.Principal;
 
 @Controller
@@ -67,9 +64,10 @@ public class FileController {
                     fileService.getNameFile(fileId) + "\"")
                     .body(fileService.downloadFileById(fileId, principal));
         } catch (Exception e) {
-            throw new CustomResponseException(HttpStatus.NO_CONTENT, ErrorResponse.messageForException(e));
+            throw new CustomResponseException(HttpStatus.NOT_FOUND, ErrorResponse.messageForException(e));
         }
     }
+
     @GetMapping("/download/{key}")
     public ResponseEntity<Resource> downloadFIle(@PathVariable("key") String key )
             throws CustomResponseException{
@@ -85,7 +83,7 @@ public class FileController {
                 throw new InvalidLinkException("Invalid link");
             }
         } catch (Exception e){
-            throw new CustomResponseException(HttpStatus.NO_CONTENT, ErrorResponse.messageForException(e));
+            throw new CustomResponseException(HttpStatus.NOT_FOUND, ErrorResponse.messageForException(e));
         }
     }
 
@@ -96,7 +94,7 @@ public class FileController {
                 model.addAttribute("ref", fileService.generateLink(fileId, principal));
                 return "/links";
             } catch (Exception e){
-                throw new CustomResponseException(HttpStatus.NO_CONTENT, ErrorResponse.messageForException(e));
+                throw new CustomResponseException(HttpStatus.BAD_REQUEST, ErrorResponse.messageForException(e));
             }
     }
 
